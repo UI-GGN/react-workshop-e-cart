@@ -8,27 +8,26 @@ import About from './About';
 import ErrorPage from './ErrorPage';
 import { Link } from 'react-router-dom';
 import { CartIcon } from '../icons';
+import useStatus from './hooks/useStatus';
 
 export default function Main() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [productList, setProductList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [cartList, setCart] = useState([]);
+  const { setStatus, Status } = useStatus('loading');
 
   useEffect(() => {
     getProductList()
       .then((products) => {
         setProductList(products);
-        setLoading(false);
+        setStatus('success');
       })
       .catch(() => {
-        setLoading(false);
-        setError(true);
+        setStatus('error');
       });
   }, []);
 
-  const handleProductAddition = (id) => {
+  const handleProductAddition = (id, operation = 'ADD') => {
     const products = [...productList];
     products.forEach((product) => {
       if (product.id === id) {
@@ -49,35 +48,34 @@ export default function Main() {
       <Router>
         <Header>
           <Link to="/">Store</Link>
-          <Link to="/about">About</Link>
+          <Link to="/about/abc">About</Link>
           <Link to="/cart">
             {' '}
             <CartIcon /> Cart ({totalCount})
           </Link>
         </Header>
+        <Status
+          loading={<h1>loading...</h1>}
+          error={<p>Something went wrong</p>}
+          success={
+            <Switch>
+              <Route exact path="/">
+                <ProductGallery
+                  products={productList}
+                  handleProductAddition={handleProductAddition}
+                />
+              </Route>
+              <Route path="/about">
+                <About />
+              </Route>
 
-        {loading ? (
-          <h1>loading...</h1>
-        ) : error ? (
-          <p>Something went wrong</p>
-        ) : (
-          <Switch>
-            <Route exact path="/">
-              <ProductGallery
-                products={productList}
-                handleProductAddition={handleProductAddition}
-              />
-            </Route>
-            <Route path="/about">
-              <About />
-            </Route>
-
-            <Route path="/cart">
-              <Cart selectedProducts={cartList} />
-            </Route>
-            <Route path="*" component={ErrorPage} />
-          </Switch>
-        )}
+              <Route path="/cart">
+                <Cart selectedProducts={cartList} />
+              </Route>
+              <Route path="*" component={ErrorPage} />
+            </Switch>
+          }
+        ></Status>
       </Router>
     </div>
   );
