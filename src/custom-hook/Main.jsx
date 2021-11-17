@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from './Header';
 import ProductGallery from './ProductGallery';
 import { getProductList } from '../service';
@@ -27,19 +27,22 @@ export default function Main() {
       });
   }, []);
 
-  const handleProductAddition = (id, operation = 'ADD') => {
-    const products = [...productList];
-    products.forEach((product) => {
-      if (product.id === id) {
-        product.count += 1;
-      }
-    });
-    setProductList(products);
-    setTotalCount(totalCount + 1);
-    setCart(() => {
-      return productList.filter((product) => {
-        return product.count;
-      });
+  const handleProductAddition =  (id) => {
+    const updatedCart = [...cartList];
+    const alreadyAddedIndex = updatedCart.findIndex((ele) => ele.id === id);
+    if (alreadyAddedIndex === -1) {
+      updatedCart.push({ id, count: 1 });
+    } else {
+      updatedCart[alreadyAddedIndex].count += 1;
+    }
+    setTotalCount(updatedCart.length);
+    setCart(updatedCart);
+  };
+
+  const getCartList = () => {
+    return cartList.map((item) => {
+      const data = productList.find((product) => product.id === item.id);
+      return { ...data, count: item.count };
     });
   };
 
@@ -63,15 +66,17 @@ export default function Main() {
                 <ProductGallery
                   products={productList}
                   handleProductAddition={handleProductAddition}
+                  cartProducts={cartList}
                 />
               </Route>
               <Route path="/about">
                 <About />
               </Route>
 
-              <Route path="/cart">
-                <Cart selectedProducts={cartList} />
-              </Route>
+              <Route
+                path="/cart"
+                component={() => <Cart selectedProducts={getCartList()} />}
+              ></Route>
               <Route path="*" component={ErrorPage} />
             </Switch>
           }

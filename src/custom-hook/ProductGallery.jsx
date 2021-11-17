@@ -1,7 +1,11 @@
 import React from 'react';
 import ProductItem from './ProductItem';
 
-export default function ProductGallery({ products, handleProductAddition }) {
+export default function ProductGallery({
+  products,
+  handleProductAddition,
+  cartProducts,
+}) {
   return (
     <div>
       <div class="text-center mt-5">
@@ -10,11 +14,17 @@ export default function ProductGallery({ products, handleProductAddition }) {
       </div>
       <div className="productGalary">
         {products.map((product) => {
+          const isAlreadyAdded = !!cartProducts.filter(
+            (item) => item.id === product.id
+          ).length;
           return (
-            <ProductItem
-              product={product}
-              handleProductAddition={handleProductAddition}
-            />
+            <>
+              <ProductItem
+                product={product}
+                handleProductAddition={handleProductAddition}
+                isAlreadyAdded={isAlreadyAdded}
+              />
+            </>
           );
         })}
       </div>

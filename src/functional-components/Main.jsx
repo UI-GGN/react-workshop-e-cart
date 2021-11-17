@@ -29,18 +29,21 @@ export default function Main() {
   }, []);
 
   const handleProductAddition = (id) => {
-    const products = [...productList];
-    products.forEach((product) => {
-      if (product.id === id) {
-        product.count += 1;
-      }
-    });
-    setProductList(products);
-    setTotalCount(totalCount + 1);
-    setCart(() => {
-      return productList.filter((product) => {
-        return product.count;
-      });
+    const updatedCart = [...cartList];
+    const alreadyAddedIndex = updatedCart.findIndex((ele) => ele.id === id);
+    if (alreadyAddedIndex === -1) {
+      updatedCart.push({ id, count: 1 });
+    } else {
+      updatedCart[alreadyAddedIndex].count += 1;
+    }
+    setTotalCount(updatedCart.length);
+    setCart(updatedCart);
+  };
+
+  const getCartList = () => {
+    return cartList.map((item) => {
+      const data = productList.find((product) => product.id === item.id);
+      return { ...data, count: item.count };
     });
   };
 
@@ -72,9 +75,10 @@ export default function Main() {
               <About />
             </Route>
 
-            <Route path="/cart">
-              <Cart selectedProducts={cartList} />
-            </Route>
+            <Route
+              path="/cart"
+              component={() => <Cart selectedProducts={getCartList()} />}
+            ></Route>
             <Route path="*" component={ErrorPage} />
           </Switch>
         )}
