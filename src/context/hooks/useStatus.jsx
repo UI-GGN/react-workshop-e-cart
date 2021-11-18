@@ -5,7 +5,7 @@ export const useStatus = (initialStatus) => {
 
   const Status = (props) => props[state];
 
-  return useMemo(()=>({ setStatus, Status }),[state]);
+  return { setStatus, Status };
 };
 
 export default useStatus;
