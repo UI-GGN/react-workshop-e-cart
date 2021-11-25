@@ -1,10 +1,8 @@
 import './App.scss';
 import Main from './functional-components/Main';
 // import Main from './custom-hook/Main';
-// import Main from './base-code/Main';
 // import Main from './useReducer/Main';
 // import Main from './context/Main';
-// import Main from './base-code-second/Main';
 // import Main from './final-solution/Main';
 
 function App() {
