@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useMemo } from "react"
 
-export const useStatus = (initialStatus) => {
-  const [state, setStatus] = useState(initialStatus);
+const useStatus = (initialState)=>{
+    const [state, setStatus] = useState(initialState);
 
-  const Status = (props) => props[state];
+    const Status = (props)=> props[state];
 
-  return { setStatus, Status };
-};
+    return useMemo(()=>{
+        return {Status,setStatus}
+    }, [state]) 
+
+}
 
 export default useStatus;

@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default function ProductItem(props) {
-  const { id, name, price, photo, count } = props.product;
-  const handleProductAddition = props.handleProductAddition;
+export default function ProductItem({product,handleProductAddition,isAlreadyAdded}) {
+  const { id, name, price, photo } = product;
   return (
     <div className="productItem">
       <img
@@ -18,7 +17,7 @@ export default function ProductItem(props) {
       <div className="productItem__name">{name}</div>
       <div className="productItem__price">${price}</div>
       <div className="productItem__controls">
-        {count ? (
+        {isAlreadyAdded ? (
           <button
             className="productItem__addbutton productItem__addbutton--secondary"
             onClick={() => handleProductAddition(id)}

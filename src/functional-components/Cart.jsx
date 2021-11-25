@@ -6,7 +6,7 @@ export default class Cart extends Component {
     const selectedProducts = [...this.props.selectedProducts];
     return (
       <>
-        <div class="text-center mt-5">
+        <div className="text-center mt-5">
           <h1>Cart</h1>
           <p>This is the Cart Page.</p>
         </div>
@@ -14,9 +14,9 @@ export default class Cart extends Component {
           {selectedProducts.length ? (
             <>
               <div className="cart__productlist">
-                {selectedProducts.map((product) => {
+                {selectedProducts.map((product,index) => {
                   return (
-                    <div className="cart__product">
+                    <div className="cart__product" key={index}>
                       <span className="cart__product__name cart__product__block">
                         {product.name}
                       </span>
@@ -39,7 +39,7 @@ export default class Cart extends Component {
             </>
           ) : (
             <>
-              <div class="text-center mt-5">
+              <div className="text-center mt-5">
                 <h1>Empty Cart</h1>
               </div>
             </>

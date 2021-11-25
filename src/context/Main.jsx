@@ -9,9 +9,9 @@ import ErrorPage from './ErrorPage';
 import { Link } from 'react-router-dom';
 import { CartIcon } from '../icons';
 import useStatus from './hooks/useStatus';
-import {CarListContext} from './cart-context/CartContext';
+import { CartContext } from './cart-context/CartContext';
 
-function reducer(state, action) {
+function cartReducer(state, action) {
   const updatedCart = [...state];
   switch (action.type) {
     case 'add':
@@ -31,12 +31,10 @@ function reducer(state, action) {
   }
 }
 
-
-
 export default function Main() {
   const [productList, setProductList] = useState([]);
-  const [cartList,setCart] = useReducer(reducer, [10]);
-  const { setStatus, Status } = useStatus('loading');
+  const [cartList, setCart] = useReducer(cartReducer,[]);
+  const {setStatus, Status} = useStatus('loading');
 
   useEffect(() => {
     getProductList()
@@ -47,11 +45,7 @@ export default function Main() {
       .catch(() => {
         setStatus('error');
       });
-  }, []);
-
-  // const handleProductAddition =  (id,actionType) => {
-  //   setCart({type:actionType, id:id});
-  // };
+  },[]);
 
   const getCartList = () => {
     return cartList.map((item) => {
@@ -63,7 +57,7 @@ export default function Main() {
   return (
     <div className="main-container">
       <Router>
-        <Header>
+        <Header >
           <Link to="/">Store</Link>
           <Link to="/about/abc">About</Link>
           <Link to="/cart">
@@ -71,17 +65,13 @@ export default function Main() {
             <CartIcon /> Cart ({cartList.length})
           </Link>
         </Header>
-        <CarListContext.Provider value={{cartList,setCart}}>
-        <Status
-          loading={<h1>loading...</h1>}
-          error={<p>Something went wrong</p>}
-          success={
-            <Switch>
+        <CartContext.Provider value={{cartList, setCart}}>
+          <Status loading={<h1>loading...</h1>} error ={ <p>Something went wrong</p>} success = {<Switch>
               <Route exact path="/">
                 <ProductGallery
                   products={productList}
-                  cartProducts={cartList}
-                />
+                  cartProducts={cartList}               
+                  />
               </Route>
               <Route path="/about">
                 <About />
@@ -92,10 +82,9 @@ export default function Main() {
                 component={() => <Cart selectedProducts={getCartList()} />}
               ></Route>
               <Route path="*" component={ErrorPage} />
-            </Switch>
-          }
-        ></Status>
-        </CarListContext.Provider>
+            </Switch>}>
+          </Status>
+        </CartContext.Provider>
       </Router>
     </div>
   );

@@ -13,18 +13,17 @@ export default function ProductGallery({
         <p>This is the Store Page.</p>
       </div>
       <div className="productGalary">
-        {products.map((product) => {
+        {products.map((product,index) => {
           const isAlreadyAdded = !!cartProducts.filter(
             (item) => item.id === product.id
           ).length;
           return (
-            <>
               <ProductItem
+              key={index}
                 product={product}
                 handleProductAddition={handleProductAddition}
                 isAlreadyAdded={isAlreadyAdded}
               />
-            </>
           );
         })}
       </div>

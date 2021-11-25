@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import ProductGallery from './ProductGallery';
+import ProductItem from './ProductItem';
 import { getProductList } from '../service';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Cart from './Cart';
@@ -66,10 +67,21 @@ export default function Main() {
         ) : (
           <Switch>
             <Route exact path="/">
-              <ProductGallery
-                products={productList}
-                handleProductAddition={handleProductAddition}
-              />
+              <ProductGallery>
+                 {productList.map((product,index) => {
+                    const isAlreadyAdded = !!cartList?.filter(
+                      (item) => item.id === product.id
+                    ).length;
+                    return (
+                        <ProductItem
+                          key={index}
+                          product={product}
+                          handleProductAddition={handleProductAddition}
+                          isAlreadyAdded={isAlreadyAdded}
+                        />
+                    );
+                  })}
+              </ProductGallery>
             </Route>
             <Route path="/about">
               <About />

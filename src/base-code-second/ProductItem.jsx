@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, {useContext} from 'react';
 
- const ProductItem = ({ product, handleProductAddition, isAlreadyAdded }) => {
+
+ const ProductItem = ({ product, isAlreadyAdded, handleProductAddition }) => {
      const { id, name, price, photo } = product;
+     console.log('I was rendered')
+
      return (
        <div className="productItem">
          <img
@@ -20,16 +23,16 @@ import React, { Component } from 'react';
            {isAlreadyAdded ? (
              <button
                className="productItem__addbutton productItem__addbutton--secondary"
-               onClick={() => handleProductAddition(id)}
+               onClick={() => handleProductAddition({id,type:'remove'})}
              >
-               Add More
+               Remove 
              </button>
            ) : (
              <button
                className="productItem__addbutton"
-               onClick={() => handleProductAddition(id)}
+               onClick={() => handleProductAddition({id,type:'add'})}
              >
-               Add To Cart
+               add
              </button>
            )}
          </div>
@@ -37,4 +40,4 @@ import React, { Component } from 'react';
      );
    };
 
- export default ProductItem;
+ export default React.memo(ProductItem);

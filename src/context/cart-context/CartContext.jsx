@@ -1,5 +1,10 @@
-import React,{useContext} from 'react';
 
-export const CarListContext = React.createContext();
+import React, { useContext } from 'react';
 
-export const useCartListContext = ()=> useContext(CarListContext);
+export const CartContext = React.createContext();
+
+export const useCartContext = ()=> {
+    const {cartList, setCart} = useContext(CartContext);
+
+    return {cartList, setCart}
+};

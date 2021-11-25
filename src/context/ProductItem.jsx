@@ -1,10 +1,8 @@
-import React, {useContext} from 'react';
-import {useCartListContext, CarListContext} from './cart-context/CartContext';
+import React, {useEffect} from 'react';
 
- const ProductItem = ({ product, isAlreadyAdded }) => {
-     const { id, name, price, photo } = product;
-     const {setCart} = useContext(CarListContext);
-
+ const ProductItem = ({product, isAlreadyAdded,handleCartAddition}) => {
+    const { id, name, price, photo } = product;
+    
      return (
        <div className="productItem">
          <img
@@ -23,16 +21,16 @@ import {useCartListContext, CarListContext} from './cart-context/CartContext';
            {isAlreadyAdded ? (
              <button
                className="productItem__addbutton productItem__addbutton--secondary"
-               onClick={() => setCart({id,type:'remove'})}
+               onClick={() => handleCartAddition({id,type:'remove'})}
              >
-               Remove 
+               Remove
              </button>
            ) : (
              <button
                className="productItem__addbutton"
-               onClick={() => setCart({id,type:'add'})}
+               onClick={() => handleCartAddition({id,type:'add'})}
              >
-               add
+               Add 
              </button>
            )}
          </div>
@@ -40,4 +38,4 @@ import {useCartListContext, CarListContext} from './cart-context/CartContext';
      );
    };
 
- export default ProductItem;
+ export default React.memo(ProductItem);

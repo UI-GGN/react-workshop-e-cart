@@ -1,22 +1,15 @@
 import React from 'react';
 import ProductItem from './ProductItem';
 
-export default function ProductGallery({ products, handleProductAddition }) {
+export default function ProductGallery({ children}) {
   return (
     <div>
-      <div class="text-center mt-5">
+      <div className="text-center mt-5">
         <h1>Store</h1>
         <p>This is the Store Page.</p>
       </div>
       <div className="productGalary">
-        {products.map((product) => {
-          return (
-            <ProductItem
-              product={product}
-              handleProductAddition={handleProductAddition}
-            />
-          );
-        })}
+        {children}
       </div>
     </div>
   );
